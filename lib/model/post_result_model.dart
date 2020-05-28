@@ -24,8 +24,8 @@ class PostResult {
     String encoded = 'Basic ' + stringaToBase64.encode(credentials);
     print(encoded);
 
-    String url = 'http://35.198.233.87:8080/login'; 
-    //String url = 'https://reqres.in/api/users'; 
+     String url = 'http://35.198.233.87:8080/login'; 
+    // String url = 'https://reqres.in/api/users'; 
     var result = await http.post(url, headers: {'Authorization':encoded});
     var jsonObject = json.decode(result.body);
     return PostResult.createPostResult(jsonObject);

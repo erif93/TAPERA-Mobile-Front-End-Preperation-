@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:belajar_flutter/model/post_result_model.dart';
-import 'package:belajar_flutter/page/home_page.dart';
+import '../model/post_result_model.dart';
+import 'Dashboard.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
     appBar: AppBar(
       title: Text("Login Form "),
       centerTitle: true,
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.blue
     ),
     body: Container(
       padding: const EdgeInsets.all(32),
@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
                   controller: passwordController,
                   decoration: InputDecoration(
                     labelText: 'Password',
+                    
                   ),
                   obscureText: true,
                 ),
@@ -54,7 +55,8 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => HomePage(text: postResult.sessionUser,),
+                        builder: (context) => Dashboard(),
+                        //  builder: (context) => Dashboard(text: postResult.sessionUser,),
                     ),);
                       
                     });
