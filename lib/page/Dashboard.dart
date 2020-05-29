@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import './update_page.dart';
+import '../model/api_service.dart';
 
 import 'Dummy.dart';
 
@@ -11,6 +13,9 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  BuildContext context;
+  ApiService apiService;
+
   @override
   Map data;
   List userData;
@@ -33,6 +38,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -73,7 +79,72 @@ class _DashboardState extends State<Dashboard> {
                       Text(
                         "${userData[index]["description"]}",
                         style: TextStyle(color: Colors.grey),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          FlatButton(
+                            onPressed: () => Navigator.of(context).push(
+                              new MaterialPageRoute(builder: (context)=>UpdateData(),)
+                            ),
+                            child: Text(
+                              "Edit",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+
+                          FlatButton(
+                            onPressed: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Warning"),
+                                      content: Text(
+                                          "Are you sure want to delete data profile ${userData[index]["firstName"]}?"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          child: Text("Yes"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            apiService
+                                                .deleteProfile(userData[index]["id"])
+                                                .then((isSuccess) {
+                                              if (isSuccess) {
+                                                setState(() {});
+                                                Scaffold.of(this.context)
+                                                    .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Delete data success")));
+                                              } else {
+                                                Scaffold.of(this.context)
+                                                    .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Delete data failed")));
+                                              }
+                                            });
+                                          },
+                                        ),
+                                        FlatButton(
+                                          child: Text("No"),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  });
+                            }
+                            ,
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+
+                        ]
                       )
+
                     ],
                   ),
                 ),
