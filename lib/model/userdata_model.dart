@@ -39,7 +39,7 @@ class UserData{
     headers: {"content-type": "application/json"},
     body: profileToJson(data),
   );
-  if (response.statusCode == 200) {
+  if (response.statusCode == 201) {
     return true;
   } else {
     return false;
