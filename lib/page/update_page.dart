@@ -25,16 +25,16 @@ class _UpdateDataState extends State<UpdateData> {
   UserData _userData = UserData();
   bool _isFieldFirstNameValid;
   bool _isFieldLastNameValid;
-  TextEditingController firstnameController;
-  TextEditingController lastnameController;
+  TextEditingController firstNameController;
+  TextEditingController lastNameController;
 
   @override
   void initState() {
     if (widget.userData != null) {
       _isFieldFirstNameValid = true;
-      firstnameController.text = widget.userData.firstname;
+      firstNameController.text = widget.userData.firstName;
       _isFieldLastNameValid = true;
-      lastnameController.text = widget.userData.lastname;
+      lastNameController.text = widget.userData.lastName;
     }
     super.initState();
   }
@@ -67,9 +67,9 @@ class _UpdateDataState extends State<UpdateData> {
                       return;
                     }
                     setState(() => _isLoading = true);
-                    String firstname = firstnameController.toString();
-                    String lastname = lastnameController.toString();
-                    UserData userData = UserData(firstname: firstname, lastname: lastname);
+                    String firstName = firstNameController.toString();
+                    String lastName = lastNameController.toString();
+                    UserData userData = UserData(firstName: firstName, lastName: lastName);
                     if (widget.userData == null) {
 
                     }
@@ -92,8 +92,11 @@ class _UpdateDataState extends State<UpdateData> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        leading: new IconButton(icon: Icon(Icons.arrow_back),
-        onPressed: () => Dashboard,),
+        // leading: new IconButton(icon: Icon(Icons.arrow_back),
+        // onPressed: (){
+        //   Navigator.pop(context); //karena kita abis ngepush biar bisa balik stacknya di bawah pakenya pop
+        // },
+        // ),
         title: new Text("Update"),
         backgroundColor: Colors.blue,
 
@@ -103,7 +106,7 @@ class _UpdateDataState extends State<UpdateData> {
           child: new Column(
             children: <Widget>[
               new TextField(
-                controller: lastnameController,
+                controller: firstNameController,
                 decoration: new InputDecoration(
                   hintText: "First Name",
                   labelText: "First Name",
@@ -117,7 +120,7 @@ class _UpdateDataState extends State<UpdateData> {
               ),
 
               new TextField(
-                controller: lastnameController,
+                controller: lastNameController,
                 decoration: new InputDecoration(
                     hintText: "Last Name",
                     labelText: "Last Name",
@@ -133,7 +136,7 @@ class _UpdateDataState extends State<UpdateData> {
               new RaisedButton(
                 child: new Text("Update"),
                 textColor: Colors.white,
-                color: Colors.black,
+                color: Colors.blue, //disamain sama login
                 onPressed: () => showAlert(context),
               )
 

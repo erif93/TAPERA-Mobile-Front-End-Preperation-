@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:friendlistview_latihan28/model/userdata_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import './update_page.dart';
+import 'update_page.dart';
 import '../model/api_service.dart';
 
 import 'Dummy.dart';
@@ -22,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
   Future getData() async {
     http.Response response =
         await http.get("http://35.198.233.87:8080/profile");
-    debugPrint(response.body);
+    //debugPrint(response.body);
     data = json.decode(response.body);
     setState(() {
       userData = data["data"];
@@ -46,8 +47,8 @@ class _DashboardState extends State<Dashboard> {
           title: Text("MII - Listview Demo"),
           actions: <Widget>[
             IconButton(
-                icon: Icon(Icons.add),
-                color: Colors.white24,
+                icon: Icon(Icons.add_circle_outline),
+                color: Colors.white,
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -65,36 +66,60 @@ class _DashboardState extends State<Dashboard> {
         body: ListView.builder(
             itemCount: userData == null ? 0 : userData.length,
             itemBuilder: (BuildContext context, int index) {
-              return Card(
-                child: Container(
-                  padding: EdgeInsets.all(10),
-                  margin: EdgeInsets.all(5),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                          "${userData[index]["firstName"]} "
-                          "${userData[index]["lastName"]}",
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
-                      Text(
-                        "${userData[index]["description"]}",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+              return Column(
+                children: <Widget>[
+                  new Card(
+                    child: Container(
+                      height: 100,
+                      width: 200,
+                      padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      margin: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                      child: Column(
                         children: <Widget>[
-                          FlatButton(
-                            onPressed: () => Navigator.of(context).push(
-                              new MaterialPageRoute(builder: (context)=>UpdateData(),)
-                            ),
+                          Text(
+                           // UserData.firstName,
+                              "${userData[index]["firstName"]} "
+                              "${userData[index]["lastName"]}",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                                  ),
+                                  
+                          Padding(
+                            padding: const EdgeInsets.all(5),
                             child: Text(
-                              "Edit",
-                              style: TextStyle(color: Colors.black),
+                              "${userData[index]["description"]}",
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ),
-
-                          FlatButton(
-                            onPressed: (){
+                        ],
+                      ),
+                    ),
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                          child: RaisedButton(
+                            color: Colors.blue,
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return UpdateData();
+                                // return HomePage(text: "Faiq Test",);
+                              }));
+                            },
+                            child: Text(
+                              "Edit",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                          child: RaisedButton(
+                            color: Colors.blue,
+                            onPressed: () {
                               showDialog(
                                   context: context,
                                   builder: (context) {
@@ -103,29 +128,30 @@ class _DashboardState extends State<Dashboard> {
                                       content: Text(
                                           "Are you sure want to delete data profile ${userData[index]["firstName"]}?"),
                                       actions: <Widget>[
-                                        FlatButton(
+                                        RaisedButton(
                                           child: Text("Yes"),
                                           onPressed: () {
                                             Navigator.pop(context);
                                             apiService
-                                                .deleteProfile(userData[index]["id"])
+                                                .deleteProfile(
+                                                    userData[index]["id"])
                                                 .then((isSuccess) {
                                               if (isSuccess) {
                                                 setState(() {});
                                                 Scaffold.of(this.context)
                                                     .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        "Delete data success")));
+                                                        content: Text(
+                                                            "Delete data success")));
                                               } else {
                                                 Scaffold.of(this.context)
                                                     .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        "Delete data failed")));
+                                                        content: Text(
+                                                            "Delete data failed")));
                                               }
                                             });
                                           },
                                         ),
-                                        FlatButton(
+                                        RaisedButton(
                                           child: Text("No"),
                                           onPressed: () {
                                             Navigator.pop(context);
@@ -134,20 +160,15 @@ class _DashboardState extends State<Dashboard> {
                                       ],
                                     );
                                   });
-                            }
-                            ,
+                            },
                             child: Text(
                               "Delete",
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
-
-                        ]
-                      )
-
-                    ],
-                  ),
-                ),
+                        ),
+                      ])
+                ],
               );
             }),
       ),

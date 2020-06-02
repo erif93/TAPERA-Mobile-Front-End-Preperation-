@@ -81,7 +81,7 @@ class _loginFormState extends State<loginForm> {
                         postResult = value;
                         setState(() {});
                         if(postResult.status == 'approved' ){
-                          Navigator.push(
+                          Navigator.pushReplacement( //aku ganti bagian ini biar ga bikin stack
                             context,
                             MaterialPageRoute(
                               builder: (context) => Dashboard(),
