@@ -20,14 +20,17 @@ class PostResult {
   static Future<PostResult> connectToAPI(String username, password) async
   {
     String credentials = username+':'+password;
+    //print(credentials);
     Codec<String, String> stringaToBase64 = utf8.fuse(base64);
     String encoded = 'Basic ' + stringaToBase64.encode(credentials);
-    print(encoded);
+    //print(encoded);
 
      String url = 'http://35.198.233.87:8080/login'; 
     // String url = 'https://reqres.in/api/users'; 
     var result = await http.post(url, headers: {'Authorization':encoded});
+    //print(result);
     var jsonObject = json.decode(result.body);
+    //print(jsonObject);
     return PostResult.createPostResult(jsonObject);
   }
 }
